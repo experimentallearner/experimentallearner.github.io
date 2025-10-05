@@ -28,7 +28,7 @@ function createPeerConnection() {
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
-      stomp.send("/app/signal", {}, JSON.stringify({
+      stomp.send("http:192.168.31.170:8080/app/signal", {}, JSON.stringify({
         type: "candidate",
         candidate: JSON.stringify(event.candidate)
       }));
@@ -39,7 +39,7 @@ function createPeerConnection() {
   peerConnection.createOffer()
     .then(offer => peerConnection.setLocalDescription(offer))
     .then(() => {
-      stomp.send("/app/signal", {}, JSON.stringify({
+      stomp.send("http:192.168.31.170:8080/app/signal", {}, JSON.stringify({
         type: "offer",
         sdp: peerConnection.localDescription
       }));
