@@ -5,7 +5,7 @@ const config = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 const socket = new SockJS('/signal');
 const stomp = Stomp.over(socket);
 stomp.connect({}, () => {
-  stomp.subscribe('/topic/signals', onSignal);
+  stomp.subscribe('https://webtrc.vercel.app/topic/signals', onSignal);
 });
 
 // Get media from camera/mic
@@ -28,7 +28,7 @@ function createPeerConnection() {
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
-      stomp.send("http:192.168.31.170:8080/app/signal", {}, JSON.stringify({
+      stomp.send("https://webtrc.vercel.app/app/signal", {}, JSON.stringify({
         type: "candidate",
         candidate: JSON.stringify(event.candidate)
       }));
@@ -39,7 +39,7 @@ function createPeerConnection() {
   peerConnection.createOffer()
     .then(offer => peerConnection.setLocalDescription(offer))
     .then(() => {
-      stomp.send("http:192.168.31.170:8080/app/signal", {}, JSON.stringify({
+      stomp.send("https://webtrc.vercel.app/app/signal", {}, JSON.stringify({
         type: "offer",
         sdp: peerConnection.localDescription
       }));
@@ -67,7 +67,7 @@ function handleOffer(msg) {
     .then(() => peerConnection.createAnswer())
     .then(answer => peerConnection.setLocalDescription(answer))
     .then(() => {
-      stomp.send("/app/signal", {}, JSON.stringify({
+      stomp.send("https://webtrc.vercel.app/app/signal", {}, JSON.stringify({
         type: "answer",
         sdp: peerConnection.localDescription
       }));
