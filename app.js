@@ -2,7 +2,7 @@ let localStream, peerConnection;
 const config = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 
 // Connect to signalling
-const socket = new SockJS('/signal');
+const socket = new SockJS('https://webtrc.vercel.app/signal');
 const stomp = Stomp.over(socket);
 stomp.connect({}, () => {
   stomp.subscribe('https://webtrc.vercel.app/topic/signals', onSignal);
